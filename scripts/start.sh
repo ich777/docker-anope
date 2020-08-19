@@ -20,8 +20,8 @@ chown -R ${UID}:${GID} /opt/scripts
 chown -R ${UID}:${GID} ${DATA_DIR}
 
 term_handler() {
-	ps -ef | grep node | grep -v "grep" | awk '{print $2}' | xargs kill -SIGTERM;
-	tail --pid="$(pidof node)" -f 2>/dev/null
+	kill -SIGTERM "$killpid"
+	wait "$killpid" -f 2>/dev/null
 	exit 143;
 }
 
