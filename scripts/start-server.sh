@@ -1,4 +1,5 @@
 #!/bin/bash
+ARCH="armv7"
 LAT_V="$(wget -qO- https://git.minenet.at/ich777/versions/raw/branch/master/Anope | grep FORK | cut -d '=' -f2)"
 if [ -z "$LAT_V" ]; then
 	LAT_V="$(curl -s https://api.github.com/repos/ich777/anope/releases/latest | grep tag_name | cut -d '"' -f4)"
@@ -17,18 +18,18 @@ echo "---Version Check---"
 if [ -z "$CUR_V" ]; then
 	echo "---Anope not found, downloading and installing v$LAT_V...---"
 	cd ${DATA_DIR}
-	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/Anope-v$LAT_V.tar.gz "https://github.com/ich777/anope/releases/download/$LAT_V/Anope-v$LAT_V.tar.gz" ; then
+	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/Anope-v$LAT_V-$ARCH.tar.gz "https://github.com/ich777/anope/releases/download/$LAT_V/Anope-v$LAT_V-$ARCH.tar.gz" ; then
 		echo "---Successfully downloaded Anope v$LAT_V---"
 	else
 		echo "---Something went wrong, can't download Anope v$LAT_V, putting container into sleep mode!---"
 		sleep infinity
 	fi
-	tar -C ${DATA_DIR} --strip-components=1 -xf ${DATA_DIR}/Anope-v$LAT_V.tar.gz
-	rm ${DATA_DIR}/Anope-v$LAT_V.tar.gz
+	tar -C ${DATA_DIR} --strip-components=1 -xf ${DATA_DIR}/Anope-v$LAT_V-$ARCH.tar.gz
+	rm ${DATA_DIR}/Anope-v$LAT_V-$ARCH.tar.gz
 elif [ "$CUR_V" != "$LAT_V" ]; then
 	echo "---Version missmatch, installed v$CUR_V, downloading and installing latest v$LAT_V...---"
 	cd ${DATA_DIR}
-	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/Anope-v$LAT_V.tar.gz "https://github.com/ich777/anope/releases/download/$LAT_V/Anope-v$LAT_V.tar.gz" ; then
+	if wget -q -nc --show-progress --progress=bar:force:noscroll -O ${DATA_DIR}/Anope-v$LAT_V-$ARCH.tar.gz "https://github.com/ich777/anope/releases/download/$LAT_V/Anope-v$LAT_V-$ARCH.tar.gz" ; then
 		echo "---Successfully downloaded Anope v$LAT_V---"
 	else
 		echo "---Something went wrong, can't download Anope v$LAT_V, putting container into sleep mode!---"
@@ -38,8 +39,8 @@ elif [ "$CUR_V" != "$LAT_V" ]; then
 	mv ${DATA_DIR}/conf/ /tmp/
 	mv ${DATA_DIR}/data/ /tmp/
 	mv ${DATA_DIR}/logs/ /tmp/
-	tar -C ${DATA_DIR} --strip-components=1 --overwrite -xf ${DATA_DIR}/Anope-v$LAT_V.tar.gz
-	rm ${DATA_DIR}/Anope-v$LAT_V.tar.gz
+	tar -C ${DATA_DIR} --strip-components=1 --overwrite -xf ${DATA_DIR}/Anope-v$LAT_V-$ARCH.tar.gz
+	rm ${DATA_DIR}/Anope-v$LAT_V-$ARCH.tar.gz
 	echo "---Restoring configuration---"
 	rm -R ${DATA_DIR}/conf/ ${DATA_DIR}/data/ ${DATA_DIR}/logs/
 	mv /tmp/conf/ ${DATA_DIR}/
