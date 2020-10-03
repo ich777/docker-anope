@@ -1,5 +1,5 @@
 #!/bin/bash
-LAT_V="$(wget -qO- https://git.minenet.at/ich777/versions/raw/branch/master/Anope | grep FORK | cut -d '=' -f2)"
+LAT_V="$(wget -qO- https://github.com/ich777/versions/raw/master/Anope | grep FORK | cut -d '=' -f2)"
 if [ -z "$LAT_V" ]; then
 	LAT_V="$(curl -s https://api.github.com/repos/ich777/anope/releases/latest | grep tag_name | cut -d '"' -f4)"
 fi
